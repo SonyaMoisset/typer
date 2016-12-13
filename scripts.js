@@ -1,15 +1,15 @@
-const ENDPOINT = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
-const CITIES = [];
+const cities = [];
 
-fetch(ENDPOINT)
+fetch(endpoint)
   .then(blob => blob.json())
-  .then(data => CITIES.push(...data));
-
-function findMatches(wordToMatch, CITIES) {
-  return CITIES.filter(place => {
-    const REGEX = new RegExp(wordToMatch, 'gi');
-    return place.city.match(REGEX) || place.state.match(REGEX)
+  .then(data => cities.push(...data));
+  
+function findMatches(wordToMatch, cities) {
+  return cities.filter(place => {
+    const regex = new RegExp(wordToMatch, 'gi');
+    return place.city.match(regex) || place.state.match(regex)
   });
 }
 
@@ -18,25 +18,25 @@ function numberWithCommas(x) {
 }
 
 function displayMatches() {
-  const MATCHARRAY = findMatches(this.value, CITIES);
-  const HTML = MATCHARRAY.map(place => {
-    const REGEX = new RegExp(this.value, 'gi');
-    const CITYNAME = place.city.replace(REGEX, `<span class="hl">${this.value}</span>`);
-    const STATENAME = place.state.replace(REGEX, `<span class="hl">${this.value}</span>`);
-
+  const matchArray = findMatches(this.value, cities);
+  
+  const html = matchArray.map(place => {
+    const regex = new RegExp(this.value, 'gi');
+    const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+    const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+    
     return `
       <li>
-        <span class="name">${CITYNAME}, ${STATENAME}</span>
+        <span class="name">${cityName}, ${stateName}</span>
         <span class="population">${numberWithCommas(place.population)}</span>
       </li>
     `;
   }).join('');
-
-  SUGGESTIONS.innerHTML = html;
+  suggestions.innerHTML = html;
 }
 
-const SEARCHINPUT = document.querySelector('.search');
-const SUGGESTIONS = document.querySelector('.suggestions');
+const searchInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
 
-SEARCHINPUT.addEventListener('change', displayMatches);
-SEARCHINPUT.addEventListener('keyup', displayMatches);
+searchInput.addEventListener('change', displayMatches);
+searchInput.addEventListener('keyup', displayMatches);
