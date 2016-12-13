@@ -18,7 +18,7 @@ function numberWithCommas(x) {
 }
 
 function displayMatches() {
-  const MATCHARRAY = findMatches(this.value, cities);
+  const MATCHARRAY = findMatches(this.value, CITIES);
   const HTML = MATCHARRAY.map(place => {
     const REGEX = new RegExp(this.value, 'gi');
     const CITYNAME = place.city.replace(REGEX, `<span class="hl">${this.value}</span>`);
